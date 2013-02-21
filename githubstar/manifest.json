@@ -1,0 +1,15 @@
+{
+  "manifest_version": 2,
+  "name": "Github Star",
+  "description": "This extension displays the information(star, fork) from github project URL",
+  "version": "0.1",  
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["jquery-1.9.1.min.js", "contents_script.js"]
+    }
+  ],
+  "permissions": [
+    "https://api.github.com/"
+  ] 
+}
