@@ -4,18 +4,18 @@ function get_url(item) {
 	return ["https://api.github.com/repos", arr[1], arr[2]].join('/');
 }
 function get_html(data) {
-	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count+" ]"
+	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count + " ]";
 }
 
 var r = /(github\.com\/)([\w_\-\.]+)\/([\w_\-\.]+)/gmi;
 var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 	display : "none",
 	position : "absolute",
-	border:"1px solid #ccc",
-	borderRadius:"5px 5px",
-	background:"#fff",
-	color:"#333",
-	padding:"5px",
+	border: "1px solid #ccc",
+	borderRadius: "5px 5px",
+	background: "#fff",
+	color: "#333",
+	padding: "5px",
 	top: "5px",
 	left: "5px",
 	zIndex : "99"
@@ -33,7 +33,7 @@ $('body a').each(function() {
 					left : (e.pageX + 15) + "px"
 				});
 				loader.show();
-				var data = lscache.get(item)
+				var data = lscache.get(item);
 				if (data) {
 					loader.html(get_html(data));
 				} else {
