@@ -16,5 +16,8 @@
 	}],
 
 	"options_page": "options.html",
-	"permissions": ["https://api.github.com/"] 
+	"permissions": [
+		"https://api.github.com/",
+		"storage"
+	] 
 }

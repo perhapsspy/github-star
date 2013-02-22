@@ -1,4 +1,4 @@
-(function(localStorage) {
+(function($) {
 
 GITHUB_APP_CLIENT_ID = '0698771622b6d6a0febc';
 GITHUB_APP_CLIENT_SECRET = '5f7a7d9700a4e8282c161cd7f33d9051fa1a3dc5';
@@ -34,12 +34,14 @@ function makeBaseAuth(username, password) {
 var signinForm = document.querySelector('#github-signin'),
     info = document.querySelector('#github-info');
 
-if (localStorage.getItem('github_auth') !== null) {
-    signinForm.style.display = 'none';
-    updateInfo();
-} else {
-    info.style.display = 'none';
-}
+chrome.storage.local.get('github_auth', function (storage) {
+    if (!!storage.github_auth) {
+        signinForm.style.display = 'none';
+        updateInfo(storage.github_auth);
+    } else {
+        info.style.display = 'none';
+    }
+});
 
 signinForm.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -52,10 +54,11 @@ signinForm.addEventListener('submit', function (e) {
         var data;
         if (this.status == 201) {
             data = JSON.parse(this.responseText);
-            localStorage.setItem('github_auth', JSON.stringify(data));
-            signinForm.style.display = 'none';
-            info.style.display = 'block';
-            updateInfo();
+            chrome.storage.local.set({'github_auth': data}, function () {
+                signinForm.style.display = 'none';
+                info.style.display = 'block';
+                updateInfo(data);
+            });
         } else if (400 <= this.status && this.status < 500) {
             console.log(this.status);
             data = JSON.parse(this.responseText);
@@ -74,8 +77,8 @@ signinForm.addEventListener('submit', function (e) {
     $(submitButton).button('loading');
 });
 
-function updateInfo() {
-    var token = JSON.parse(localStorage.getItem('github_auth')).token;
+function updateInfo(auth) {
+    var token = auth.token;
     var req = makeRequest('get', 'user');
     req.addEventListener('load', function (e) {
         if (this.status < 400) {
@@ -88,9 +91,10 @@ function updateInfo() {
             heading.innerHTML = data.name;
         } else {
             console.log(this.status);
-            localStorage.removeItem('github_auth');
-            info.style.display = 'none';
-            signinForm.style.display = 'block';
+            chrome.storage.local.remove('github_auth', function () {
+                info.style.display = 'none';
+                signinForm.style.display = 'block';
+            });
         }
     });
     req.setRequestHeader('Authorization', 'token ' + token);
@@ -98,16 +102,19 @@ function updateInfo() {
 }
 
 document.querySelector('#revoke-auth').addEventListener('click', function (e) {
-    var auth = JSON.parse(localStorage.getItem('github_auth'));
-    var req = makeRequest('delete', auth.url);
-    req.addEventListener('load', function (e) {
-        console.log(this.status);
-        localStorage.removeItem('github_auth');
-        info.style.display = 'none';
-        signinForm.style.display = 'block';
+    chrome.storage.local.get('github_auth', function (storage) {
+        var auth = storage.github_auth;
+        var req = makeRequest('delete', auth.url);
+        req.addEventListener('load', function (e) {
+            console.log(this.status);
+            chrome.storage.local.remove('github_auth', function () {
+                info.style.display = 'none';
+                signinForm.style.display = 'block';
+            });
+        });
+        req.setRequestHeader('Authorization', 'token ' + auth.token);
+        req.send(null);
     });
-    req.setRequestHeader('Authorization', 'token ' + auth.token);
-    req.send(null);
 });
 
-}(window.localStorage));
+}(jQuery));
