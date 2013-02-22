@@ -7,7 +7,7 @@ function get_html(data) {
 	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count+" ]"
 }
 
-var r = /(github\.com\/)([\w_\-]+)\/([\w_\-]+)/gmi;
+var r = /(github\.com\/)([\w_\-\.]+)\/([\w_\-\.]+)/gmi;
 var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 	display : "none",
 	position : "absolute",
