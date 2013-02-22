@@ -3,9 +3,11 @@ function get_url(item) {
 	var arr = item.split('/');
 	return ["https://api.github.com/repos", arr[1], arr[2]].join('/');
 }
-var r = /(github\.com\/)([\w_\-]+)\/([\w_\-]+)/gmi;
-var items = [];
+function get_html(data) {
+	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count+" ]"
+}
 
+var r = /(github\.com\/)([\w_\-]+)\/([\w_\-]+)/gmi;
 var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 	display : "none",
 	position : "absolute",
@@ -19,26 +21,27 @@ var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 	zIndex : "99"
 }).appendTo("body");
 
-$('body').mousemove(function(e) {
-	loader.css({
-		top : (e.pageY + 7) + "px",
-		left : (e.pageX + 17) + "px"
-	});
-});
-
 $('body a').each(function() {
 	var href = $(this).attr('href');
 	if (r.test(href)) {
 		var url = href.match(r);
 		if (url) {
 			var item = url[0];	
-			$(this).hover(function() {
-				loader.show();
-				$.getJSON(get_url(item), function(data) {
-					loader.text(data.full_name +  
-					": watchers[" + data.watchers_count + 
-					"], forks [" + data.forks_count+"]");
+			$(this).hover(function(e) {
+				loader.css({
+					top : (e.pageY + 5) + "px",
+					left : (e.pageX + 15) + "px"
 				});
+				loader.show();
+				var data = lscache.get(item)
+				if (data) {
+					loader.html(get_html(data));
+				} else {
+					$.getJSON(get_url(item), function(data) {
+						lscache.set(item, data, 60);
+						loader.html(get_html(data));
+					});
+				}
 			}, function() {
 				loader.hide();
 				loader.text('Loading. If you wait too long, Can not be found(404) or has been limited(60/hour)');
