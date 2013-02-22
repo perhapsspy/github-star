@@ -7,6 +7,25 @@ function get_html(data) {
 	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count+" ]"
 }
 
+chrome.storage.local.get('github_auth', function (storage) {
+	if (!!storage.github_auth) {
+		$.ajaxSetup({
+			headers: {
+				'Authorization': 'token ' + storage.github_auth.token
+			}
+		});
+	}
+});
+
+$(document).ajaxComplete(function (e, xhr, options) {
+	var remaining = xhr.getResponseHeader('X-RateLimit-Remaining');
+	if (remaining !== null) {
+		var limit = xhr.getResponseHeader('X-RateLimit-Limit');
+		log('API calls remained: ' + remaining + '/' + limit);
+	}
+});
+
+
 var r = /(github\.com\/)([\w_\-\.]+)\/([\w_\-\.]+)/gmi;
 var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 	display : "none",
