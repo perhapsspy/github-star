@@ -22,7 +22,7 @@ var loader = $('<div id="github-star-loader">Github Star</div>').css( {
 }).appendTo("body");
 
 $('body a').each(function() {
-	var href = $(this).attr('href');
+	var href = $(this).prop('href');
 	if (r.test(href)) {
 		var url = href.match(r);
 		if (url) {
