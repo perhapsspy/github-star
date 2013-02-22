@@ -9,8 +9,8 @@
 	"content_scripts": [{
 		"matches": ["<all_urls>"],
 		"js": [
-			"jquery-1.9.1.min.js",
-			"lscache.js",
+			"lib/jquery-1.9.1.min.js",
+			"lib/lscache.js",
 			"contents_script.js"
 		]
 	}],
