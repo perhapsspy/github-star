@@ -14,6 +14,10 @@
 			"contents_script.js"
 		]
 	}],
-	
-	"permissions": ["https://api.github.com/"] 
+
+	"options_page": "options.html",
+	"permissions": [
+		"https://api.github.com/",
+		"storage"
+	] 
 }
