@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GitHub Star</title>
+  <link rel="stylesheet" type="text/css" href="lib/bootstrap/css/bootstrap.min.css" media="all" />
+  <link rel="stylesheet" type="text/css" href="options.css" media="all" />
+  <script src="jquery-1.9.1.min.js"></script>
+  <script src="lib/bootstrap/js/bootstrap.min.js"></script>
+  <script src="lib/base64.js"></script>
+</head>
+<body>
+  <div class="container">
+    <section id="authorization" class="row">
+      <form id="github-signin" action="#" class="form-horizontal well">
+        <div class="control-group">
+          <label for="github-username" class="control-label">Username or Email</label>
+          <div class="controls">
+            <input type="text" id="github-username" />
+          </div>
+        </div>
+        <div class="control-group">
+          <label for="github-password" class="control-label">Password</label>
+          <div class="controls">
+            <input type="password" id="github-password" />
+          </div>
+        </div>
+        <div class="control-group">
+          <div class="controls">
+            <button type="submit" class="btn btn-primary" data-loading-text="Signing in...">Sign in</button>
+          </div>
+        </div>
+      </form>
+
+      <div id="github-info" class="media well">
+        <a class="avatar pull-left" href="#">
+          <img class="media-object" src="#" width="80" height="80" />
+        </a>
+        <div class="media-body">
+          <h3 class="media-heading"><a></a></h3>
+          <button id="revoke-auth" class="btn">Revoke</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <script src="options.js"></script>
+</body>
+</html>
