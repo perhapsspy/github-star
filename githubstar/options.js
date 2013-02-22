@@ -101,20 +101,4 @@ function updateInfo(auth) {
 	req.send(null);
 }
 
-document.querySelector('#revoke-auth').addEventListener('click', function (e) {
-	chrome.storage.local.get('github_auth', function (storage) {
-		var auth = storage.github_auth;
-		var req = makeRequest('delete', auth.url);
-		req.addEventListener('load', function (e) {
-			console.log(this.status);
-			chrome.storage.local.remove('github_auth', function () {
-				info.style.display = 'none';
-				signinForm.style.display = 'block';
-			});
-		});
-		req.setRequestHeader('Authorization', 'token ' + auth.token);
-		req.send(null);
-	});
-});
-
 }(jQuery));
