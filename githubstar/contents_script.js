@@ -14,9 +14,6 @@ chrome.storage.local.get('github_auth', function (storage) {
 				'Authorization': 'token ' + storage.github_auth.token
 			}
 		});
-	} else {
-		var optionsURL = chrome.extension.getURL('options.html');
-		window.open(optionsURL);
 	}
 });
 
