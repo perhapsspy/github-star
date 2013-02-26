@@ -4,7 +4,7 @@ function get_url(item) {
 	return ["https://api.github.com/repos", arr[1], arr[2]].join('/');
 }
 function get_html(data) {
-	return data.full_name + "<br />watchers [ " + data.watchers_count + " ] forks [ " + data.forks_count + " ]";
+	return data.full_name + "<br />Stars [ " + data.watchers_count + " ] Forks [ " + data.forks_count + " ]";
 }
 
 chrome.storage.local.get('github_auth', function (storage) {
